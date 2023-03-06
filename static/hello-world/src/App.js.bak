@@ -1,0 +1,211 @@
+import React, { useEffect, useState, Fragment } from 'react';
+import { invoke, view } from '@forge/bridge';
+import { storage } from '@forge/api';
+import Button from "@atlaskit/button";
+import api, { route } from '@forge/api'
+import Form, { Field, FormFooter, HelperMessage } from '@atlaskit/form';
+import Textfield from '@atlaskit/textfield';
+import Select from '@atlaskit/select';
+
+// Custom Styles
+import {
+  FormContainer, FormToInput
+} from './style';
+
+import './cs.css';
+
+function App() {
+    const [zapis, ustawZapis] = useState('');
+    const [zapis2, ustawZapis2] = useState('');
+    const [zapis3, ustawZapis3] = useState('');
+
+    const[dane,ustawDane] = useState(null);
+    const[dane2,ustawDane2] = useState(null);
+    const[dane3,ustawDane3] = useState(null);
+
+    const[usuwanie,daneUsuniete] = useState("false");
+    const[zapisywanie,daneZapisane] = useState("true");
+
+    //Wykonanie funkcji od razu po załadowaniu strony
+    useEffect(() => {
+        //invoke('odczytajLicznik').then(ustawLicznik);
+        invoke('odczytDanych').then(ustawDane);
+        invoke('odczytDanych2').then(ustawDane2);
+        invoke('odczytDanych3').then(ustawDane3);
+        //invoke('odczytLicznika').then(ustawLicznik);
+    }, 5000);
+
+
+    const odczytDanych = () => {
+        invoke('odczytDanych').then(ustawDane);
+        invoke('odczytDanych2').then(ustawDane2);
+        invoke('odczytDanych3').then(ustawDane3);
+    }
+
+    const usunDane   = () => {
+        invoke('usunDane').then(daneUsuniete);
+        var delayInMilliseconds = 1000;
+        setTimeout(function() {
+            invoke('odczytDanych').then(ustawDane);
+            invoke('odczytDanych2').then(ustawDane2);
+            invoke('odczytDanych3').then(ustawDane3);
+        }, delayInMilliseconds);
+    }
+
+    const onSubmit = () => {
+        //ustawLicznik(licznik+1);
+        invoke('zapisDanych', { name: zapis, dane}).then(daneZapisane);
+
+        var delayInMilliseconds = 500;
+        setTimeout(function() {
+            ustawZapis('');
+            invoke('odczytDanych').then(ustawDane);
+
+        }, delayInMilliseconds);
+    };
+
+    const onSubmit2 = () => {
+        ustawLicznik2(licznik2+1);
+        invoke('zapisDanych2', { name: zapis2, licznik2, dane2 }).then(daneZapisane);
+
+        var delayInMilliseconds = 500;
+        setTimeout(function() {
+            ustawZapis2('');
+            invoke('odczytDanych2').then(ustawDane2);
+        }, delayInMilliseconds);
+    };
+
+    const onSubmit3 = () => {
+        invoke('zapisDanych3', { name: zapis3, licznik3, dane3 }).then(daneZapisane);
+        var delayInMilliseconds = 1000;
+        setTimeout(function() {
+            ustawZapis3('');
+            invoke('odczytDanych3').then(ustawDane3);
+        }, delayInMilliseconds);
+    };
+
+    const Rows = () => (
+        <div>
+            {dane ? dane.map(opinia => (
+            <div className="comicGreen">{opinia.key} : {opinia.value}</div>
+            ))
+            : 'Wczytuje ...'}
+        </div>
+    );
+
+    const Rows2 = () => (
+        <div>
+            {dane2 ? dane2.map(opinia => (
+            <div className="comicred">{opinia.key} : {opinia.value}</div>
+            ))
+            : 'Wczytuje ...'}
+        </div>
+        );
+
+    const Rows3 = () => (
+        <div>
+            {dane3 ? dane3.map(opinia => (
+            <div className="comiclightblue">{opinia.key} : {opinia.value}</div>
+            ))
+            : 'Wczytuje ...'}
+        </div>
+        );
+
+    return (
+        <div>
+            <p>
+            <FormContainer>
+                <FormToInput>
+                    <Form onSubmit={onSubmit} >
+                    {({ formProps }: any) => (
+                    <form {...formProps}>
+                        <Field label="What went well" name="example-text">
+                            {({ fieldProps }: any) => (
+                                <Fragment>
+                                    <Textfield //width={400}
+                                        placeholder="Twoja opinia"
+                                        value={zapis}
+                                        onChange={({ target }) => ustawZapis(target.value)}
+                                    />
+                                </Fragment>
+                            )}
+                        </Field>
+                        <FormFooter>
+                            <Button type="submit" appearance="primary">
+                                Wyślij
+                            </Button>
+                        </FormFooter>
+                    </form>
+                    )}
+                    </Form>
+                  <div className="FormToInputGreen">
+                  <Rows />
+                  </div>
+                </FormToInput>
+                <FormToInput>
+                    <Form onSubmit={onSubmit2} >
+                    {({ formProps }: any) => (
+                    <form {...formProps}>
+                        <Field label="What went well" name="example-text">
+                            {({ fieldProps }: any) => (
+                                <Fragment>
+                                    <Textfield //width={400}
+                                        placeholder="Twoja opinia"
+                                        value={zapis2}
+                                        onChange={({ target }) => ustawZapis2(target.value)}
+                                    />
+                                </Fragment>
+                            )}
+                        </Field>
+                        <FormFooter>
+                            <Button type="submit" appearance="primary" >
+                                Wyślij
+                            </Button>
+                        </FormFooter>
+                    </form>
+                    )}
+                    </Form>
+                  <div className="FormToInputRed">
+                  <Rows2 />
+                  </div>
+                </FormToInput>
+                <FormToInput>
+                    <Form onSubmit={onSubmit3} >
+                    {({ formProps }: any) => (
+                    <form {...formProps}>
+                        <Field label="What went well" name="example-text">
+                            {({ fieldProps }: any) => (
+                                <Fragment>
+                                    <Textfield //width={400}
+                                        placeholder="Twoja opinia"
+                                        value={zapis3}
+                                        onChange={({ target }) => ustawZapis3(target.value)}
+                                    />
+                                </Fragment>
+                            )}
+                        </Field>
+                        <FormFooter>
+                            <Button type="submit" appearance="primary" >
+                                Wyślij
+                            </Button>
+                        </FormFooter>
+                    </form>
+                    )}
+                    </Form>
+                  <div className="FormToInputlightblue">
+                  <Rows3 />
+                  </div>
+                </FormToInput>
+
+            </FormContainer>
+
+            </p>
+            <Button appearance="primary" onClick={odczytDanych}>Odczytaj dane</Button>
+            <Button appearance="primary" onClick={usunDane}>Usun Dane</Button>
+
+            <img src="./sailboat.png"/>
+        </div>
+    );
+}
+
+export default App;

@@ -1,0 +1,80 @@
+.SelectRetrospectiveHide {
+    display: none;
+}
+.SelectRetrospectiveShow {
+    display: block;
+}
+.ImageRetrospectiveHide {
+    display: none;
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+}
+.ImageRetrospectiveShow {
+    display: block;
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.Button {
+  padding: 5px;
+}
+
+.FormToInputRed
+{
+    vertical-align: top;
+}
+
+.FormToInputGreen
+{
+    vertical-align: top;
+}
+.FormToInputlightblue
+{
+    vertical-align: top;
+}
+.comicred {
+    vertical-align: top;
+    display: block;
+    color: #000;
+    background-color: red;
+    border: 2px solid #fff;
+    padding: 10px;
+    margin: 10px;
+    border-radius: 20px;
+    box-shadow: 5px 5px 5px rgba(0,0,0,.5);
+    position: relative;
+}
+
+.comicGreen {
+    vertical-align: top;
+    display: block;
+    color: #000;
+    background-color: lightgreen;
+    border: 2px solid #fff;
+    padding: 10px;
+    margin: 10px;
+    border-radius: 20px;
+    box-shadow: 5px 5px 5px rgba(0,0,0,.5);
+    position: relative;
+}
+
+.comiclightblue {
+    vertical-align: top;
+    display: block;
+    color: #000;
+    background-color: lightblue;
+    border: 2px solid #fff;
+    padding: 10px;
+    margin: 10px;
+    border-radius: 20px;
+    box-shadow: 5px 5px 5px rgba(0,0,0,.5);
+    position: relative;
+}
+
+.FormButton
+{
+    margin-top: 20px;
+    text-align: right;
+}
